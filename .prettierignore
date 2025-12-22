@@ -1,0 +1,19 @@
+# Build artifacts
+.next/
+out/
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Misc caches
+.turbo/
+
+# Coverage
+coverage/
+
+# OS/Editor
+.DS_Store
+.vscode/
+.idea/
