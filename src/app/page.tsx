@@ -32,7 +32,7 @@ export default function HomePage() {
           <div className="">
             <div className="badge badge-outline mb-6 opacity-70">v1.0 Public Beta</div>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-base-content mb-6">
-              The Social Media for{' '}
+              Social Media for{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                 Gastronomy
               </span>
