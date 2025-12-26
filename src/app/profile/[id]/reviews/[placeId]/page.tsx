@@ -1,22 +1,37 @@
 import Link from 'next/link';
-import { getCurrentUser, getPlace } from '@/lib/data';
-import { ItemCategory, ItemReviewInput } from '@/lib/types';
+import { getPlace, getReview, getUser } from '@/lib/data';
+import { ItemCategory, ItemReview, PlaceReview } from '@/lib/types';
 import PlaceReviewFormWrapper from '@/components/PlaceReviewFormWrapper';
+import { FIELD_REPLACE_VALUE } from '@/lib/constants';
 
-function emptyItem(): ItemReviewInput {
+function emptyItem(): ItemReview {
   return {
+    id: FIELD_REPLACE_VALUE,
     name: '',
     category: 'Entree' as ItemCategory,
     price: '',
     rating: 0,
     rank: 1,
     notes: '',
+    photoUrl: '',
+    createdAt: FIELD_REPLACE_VALUE,
+  };
+}
+
+function createInitialValue(placeId: string, userId: string): PlaceReview {
+  return {
+    id: FIELD_REPLACE_VALUE,
+    userId: userId,
+    placeId: placeId,
+    rating: 0,
+    rank: 1,
+    items: [emptyItem()],
   };
 }
 
 export default async function PlaceReviewPage({ params }: { params: Promise<{ id: string; placeId: string }> }) {
-  const { id, placeId } = await params;
-  const user = await getCurrentUser();
+  const { id: userId, placeId } = await params;
+  const user = await getUser(userId);
   const place = await getPlace(placeId);
 
   if (!user || !place) {
@@ -24,20 +39,15 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
       <div className="prose">
         <h1>Not found</h1>
         <p>User or place could not be found.</p>
-        <Link href={`/profile/${id}`} className="btn btn-primary">
+        <Link href={`/profile/${userId}`} className="btn btn-primary">
           Back to profile
         </Link>
       </div>
     );
   }
 
-  const initialValue = {
-    userId: user.id,
-    placeId: place.id,
-    rating: 0,
-    rank: 1,
-    items: [emptyItem()],
-  };
+  const review = await getReview(placeId, userId);
+  const initialValue = createInitialValue(placeId, userId);
 
   return (
     <div className="space-y-6">
@@ -57,7 +67,7 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
         Add one or more items you tried at this place. Use the + button to add more.
       </p>
 
-      <PlaceReviewFormWrapper value={initialValue} userId={user.id} place={place} />
+      <PlaceReviewFormWrapper value={review ?? initialValue} userId={user.id} place={place} />
     </div>
   );
 }

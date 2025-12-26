@@ -1,8 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import PlaceReviewForm from '@/components/PlaceReviewForm';
-import { Place, PlaceReviewInput } from '@/lib/types';
+import { Place, PlaceReview } from '@/lib/types';
+import { getCurrentUser } from '@/lib/data';
 
 export default function PlaceReviewFormWrapper({
   place,
@@ -10,26 +11,16 @@ export default function PlaceReviewFormWrapper({
   userId,
 }: {
   place: Place;
-  value: PlaceReviewInput;
+  value: PlaceReview;
   userId: string;
 }) {
-  const router = useRouter();
+  const [isOwner, setIsOwner] = useState(false);
 
-  async function onSubmit(v: any) {
-    const res = await fetch('/api/reviews', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(v),
+  useEffect(() => {
+    getCurrentUser().then((user) => {
+      setIsOwner(user.id === userId);
     });
-    if (!res.ok) {
-      const text = await res.text();
-      alert(`Failed to save: ${text}`);
-      return;
-    }
-    const data = await res.json();
-    // After save, navigate back to profile (or could go to place page when available)
-    router.push(`/profile/${userId}`);
-  }
+  }, [userId]);
 
-  return <PlaceReviewForm place={place} value={value} onSubmit={onSubmit} />;
+  return <PlaceReviewForm place={place} value={value} readOnly={!isOwner} />;
 }

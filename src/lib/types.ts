@@ -43,10 +43,3 @@ export type User = {
   followingCount: number;
   followerCount: number;
 };
-
-// Input types for creating a place review via UI/API
-export type ItemReviewInput = Omit<ItemReview, 'id' | 'createdAt' | 'photoUrl'>;
-
-export type PlaceReviewInput = Omit<PlaceReview, 'id' | 'items'> & {
-  items: ItemReviewInput[];
-};

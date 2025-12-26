@@ -1,5 +1,6 @@
-import { User, PlaceReview, Place, PlaceAndReview, PlaceReviewInput } from '@/lib/types';
+import { User, PlaceReview, Place, PlaceAndReview } from '@/lib/types';
 import { MOCK_PLACE_REVIEWS, MOCK_PLACES, MOCK_USERS } from '@/lib/mocks';
+import { FIELD_REPLACE_VALUE } from '@/lib/constants';
 
 export async function getCurrentUser(): Promise<User> {
   return MOCK_USERS['user_1'];
@@ -54,17 +55,18 @@ function uid(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 8)}_${Date.now().toString(36)}`;
 }
 
-export async function savePlaceReview(input: PlaceReviewInput): Promise<PlaceReview> {
+// TODO: implement in backend
+export async function savePlaceReview(input: PlaceReview): Promise<PlaceReview> {
   const review: PlaceReview = {
-    id: uid('review'),
+    id: hasReplaceValue(input.id) ? uid('review') : input.id,
     userId: input.userId,
     placeId: input.placeId,
     rating: input.rating,
     rank: input.rank,
     items: input.items.map((it) => ({
       ...it,
-      id: uid('item'),
-      createdAt: new Date().toISOString(),
+      id: hasReplaceValue(it.id) ? uid('item') : it.id,
+      createdAt: hasReplaceValue(it.createdAt) ? new Date().toISOString() : it.createdAt,
     })),
   };
 
@@ -72,5 +74,10 @@ export async function savePlaceReview(input: PlaceReviewInput): Promise<PlaceRev
     MOCK_PLACE_REVIEWS[input.placeId] = [];
   }
   MOCK_PLACE_REVIEWS[input.placeId].push(review);
+
   return review;
+}
+
+function hasReplaceValue(field: string): boolean {
+  return field === FIELD_REPLACE_VALUE;
 }
