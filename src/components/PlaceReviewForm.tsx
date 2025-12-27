@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useActionState, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ItemCategory, ItemReview, Place, PlaceReview } from '@/lib/types';
 import { FIELD_REPLACE_VALUE } from '@/lib/constants';
-import { submitPlaceReview } from '@/lib/actions';
 import Toast from '@/components/Toast';
+import { savePlaceReview } from '@/lib/data';
 
 export type PlaceReviewFormProps = {
   place: Place;
@@ -16,21 +16,12 @@ export type PlaceReviewFormProps = {
 const categories: ItemCategory[] = ['Entree', 'App', 'Dessert', 'Drink'];
 const SUBMITTING_TEXT = 'Saving review...';
 
-const initialState = {
-  errors: null,
-};
-
 export default function PlaceReviewForm({ place, value, readOnly = false }: PlaceReviewFormProps) {
   const [form, setForm] = useState<PlaceReview>(() => ({ ...value }));
-  const [state, formAction, isPending] = useActionState(submitPlaceReview, initialState);
-  const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    if (state?.errors) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowToast(true);
-    }
-  }, [state]);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const addItem = () => {
     setForm(
@@ -83,8 +74,23 @@ export default function PlaceReviewForm({ place, value, readOnly = false }: Plac
     updateItem(idx, { photoUrl: url });
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setIsPending(true);
+      await savePlaceReview(form);
+      setShowSuccessToast(true);
+    } catch (err) {
+      setError((err as Error).message);
+      setShowErrorToast(true);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
   return (
-    <form action={formAction} className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+    <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
       {/* Left panel: hero image and item list akin to Pinterest pin compose */}
       <div className="card bg-base-200 shadow-sm">
         <div className="card-body gap-4">
@@ -296,9 +302,10 @@ export default function PlaceReviewForm({ place, value, readOnly = false }: Plac
           )}
         </div>
       </div>
-      {state?.errors && showToast ? (
-        <Toast message={state.errors} type="error" onClose={() => setShowToast(false)} />
+      {showSuccessToast ? (
+        <Toast message="Saved place review!" type="success" onClose={() => setShowSuccessToast(false)} />
       ) : null}
+      {error && showErrorToast ? <Toast message={error} type="error" onClose={() => setShowErrorToast(false)} /> : null}
     </form>
   );
 }

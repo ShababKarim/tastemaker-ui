@@ -70,10 +70,19 @@ export async function savePlaceReview(input: PlaceReview): Promise<PlaceReview> 
     })),
   };
 
+  // simulate delay
+  await new Promise((res) => {
+    setTimeout(() => {
+      res(null);
+    }, 300);
+  });
+
   if (!MOCK_PLACE_REVIEWS[input.placeId]) {
     MOCK_PLACE_REVIEWS[input.placeId] = [];
   }
-  MOCK_PLACE_REVIEWS[input.placeId].push(review);
+  MOCK_PLACE_REVIEWS[input.placeId] = [
+    ...MOCK_PLACE_REVIEWS[input.placeId].filter((review) => review.id !== input.id),
+  ].concat(input);
 
   return review;
 }
