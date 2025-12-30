@@ -1,0 +1,18 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { AUTH_COOKIE } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
+
+export async function POST(_req: NextRequest) {
+  const res = NextResponse.json({ ok: true });
+  res.cookies.set(AUTH_COOKIE, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  });
+
+  revalidatePath('/');
+
+  return res;
+}

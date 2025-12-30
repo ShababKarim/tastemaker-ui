@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { getCurrentUser } from '@/lib/data';
+import { getSessionUserFromCookies } from '@/lib/auth';
+import LogoutButton from '@/components/LogoutButton';
 
 export default async function Navbar() {
-  const user = await getCurrentUser();
+  const user = await getSessionUserFromCookies();
 
   return (
     <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50">
@@ -26,41 +27,52 @@ export default async function Navbar() {
         </div>
 
         {/* User Profile Dropdown */}
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="flex gap-1 items-center pr-2 cursor-pointer no-hover">
-            <div className="avatar">
-              <div className="w-10 rounded-full">
-                <img alt="User Avatar" src={user.avatarUrl} />
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="flex gap-1 items-center pr-2 cursor-pointer no-hover">
+              <div className="avatar">
+                <div className="w-10 rounded-full">
+                  <img alt="User Avatar" src={user.avatarUrl} />
+                </div>
               </div>
-            </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </label>
-          <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-            <li>
-              <Link href={`/profile/${user.id}`} className="justify-between">
-                Profile
-              </Link>
-            </li>
-            <li>
-              <Link href="/settings">Settings</Link>
-            </li>
-            <li>
-              <Link href="/logout">Logout</Link>
-            </li>
-          </ul>
-        </div>
+              <li>
+                <Link href={`/profile/${user.id}`} className="justify-between">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link href="/">Settings</Link>
+              </li>
+              <li>
+                <LogoutButton />
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <Link href="/login" className="btn btn-sm">
+              Log in
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
