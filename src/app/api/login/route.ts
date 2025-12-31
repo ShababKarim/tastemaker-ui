@@ -15,6 +15,8 @@ export async function POST(req: NextRequest) {
     }
 
     const token = createTokenForUser(user);
+    // simulate delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const res = NextResponse.json(
       { user: { id: user.id, name: user.name, username: user.username, avatarUrl: user.avatarUrl } },

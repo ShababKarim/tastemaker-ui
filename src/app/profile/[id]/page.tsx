@@ -50,7 +50,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
       </div>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-4">Reviewed Restaurants</h2>
+        <h2 className="text-2xl text-secondary font-semibold mb-4">Reviews</h2>
         {reviews.length === 0 ? (
           <p className="text-base-content/70">No reviews yet.</p>
         ) : (

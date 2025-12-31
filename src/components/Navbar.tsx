@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getSessionUserFromCookies } from '@/lib/auth';
 import LogoutButton from '@/components/LogoutButton';
+import LoginButton from '@/components/LoginButton';
 
 export default async function Navbar() {
   const user = await getSessionUserFromCookies();
@@ -68,9 +69,7 @@ export default async function Navbar() {
           </div>
         ) : (
           <div className="flex items-center">
-            <Link href="/login" className="btn btn-sm">
-              Log in
-            </Link>
+            <LoginButton />
           </div>
         )}
       </div>
