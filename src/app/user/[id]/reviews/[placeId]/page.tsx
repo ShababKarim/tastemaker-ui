@@ -39,7 +39,7 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
       <div className="prose">
         <h1>Not found</h1>
         <p>User or place could not be found.</p>
-        <Link href={`/profile/${userId}`} className="btn btn-primary">
+        <Link href={`/user/${userId}`} className="btn btn-primary">
           Back to profile
         </Link>
       </div>
@@ -54,7 +54,7 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
       <div className="breadcrumbs text-sm">
         <ul>
           <li>
-            <Link href={`/profile/${user.id}`}>{user.username}</Link>
+            <Link href={`/user/${user.id}`}>{user.username}</Link>
           </li>
           <li>
             <span className="opacity-70">{place.name}</span>

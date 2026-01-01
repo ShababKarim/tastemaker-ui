@@ -48,7 +48,7 @@ export default function HomePage() {
               >
                 Start Curating
               </a>
-              <Link href="/profile/user_1" className="btn btn-ghost btn-lg rounded-full">
+              <Link href="/src/app/user/user_1" className="btn btn-ghost btn-lg rounded-full">
                 View Demo Profile →
               </Link>
             </div>

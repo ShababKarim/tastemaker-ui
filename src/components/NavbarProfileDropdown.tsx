@@ -31,7 +31,7 @@ export default async function NavbarProfileDropdown() {
           </label>
           <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
             <li>
-              <Link href={`/profile/${user.id}`} className="justify-between">
+              <Link href={`/user/${user.id}`} className="justify-between">
                 Profile
               </Link>
             </li>

@@ -73,7 +73,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
                     {review.items.length === 1 ? '1 dish reviewed' : `${review.items.length} dishes reviewed`}
                   </p>
                   <div className="card-actions justify-end">
-                    <Link className="btn btn-primary btn-sm" href={`/profile/${user.id}/reviews/${place.id}`}>
+                    <Link className="btn btn-primary btn-sm" href={`/user/${user.id}/reviews/${place.id}`}>
                       Edit
                     </Link>
                   </div>
