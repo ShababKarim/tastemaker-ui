@@ -7,7 +7,7 @@ export default async function Navbar() {
   const user = await getSessionUserFromCookies();
 
   return (
-    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50">
+    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50 font-mono">
       <div className="flex-none">
         <Link href="/" className="btn btn-ghost text-xl font-bold tracking-tight">
           <span className="text-primary">Taste</span>maker

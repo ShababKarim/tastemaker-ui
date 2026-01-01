@@ -47,7 +47,7 @@ export default function LoginModal() {
   }
 
   return (
-    <dialog id={LOGIN_MODAL_ID} className="modal">
+    <dialog id={LOGIN_MODAL_ID} className="modal font-sans">
       <div className="modal-box">
         <form onSubmit={onSubmit} className="space-y-4">
           <h3 className="font-bold text-lg text-center">Welcome back</h3>
