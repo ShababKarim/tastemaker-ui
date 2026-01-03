@@ -119,10 +119,10 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                 min={0}
                 max={5}
                 step={1}
-                className={`input input-bordered`}
+                className={`input input-bordered ${readOnly ? 'pointer-events-none' : ''}`}
                 value={form.rating}
                 onChange={(e) => setField('rating', Number(e.target.value))}
-                disabled={readOnly}
+                readOnly={readOnly}
               />
             </div>
 
@@ -135,10 +135,10 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                 type="number"
                 name="place-rank"
                 min={1}
-                className="input input-bordered"
+                className={`input input-bordered ${readOnly ? 'pointer-events-none' : ''}`}
                 value={form.rank}
                 onChange={(e) => setField('rank', Number(e.target.value))}
-                disabled={readOnly}
+                readOnly={readOnly}
               />
             </div>
           </div>
@@ -168,12 +168,12 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                         <span className="text-xs ml-1">Name</span>
                       </div>
                       <input
-                        className={`input input-bordered input-sm`}
+                        className={`input input-bordered input-sm  ${readOnly ? 'pointer-events-none' : ''}`}
                         name={`item-${idx}-name`}
                         value={item.name}
                         onChange={(e) => updateItem(idx, { name: e.target.value })}
                         placeholder="e.g., Margherita Pizza"
-                        disabled={readOnly}
+                        readOnly={readOnly}
                       />
                     </label>
 
@@ -181,18 +181,26 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                       <div className="label">
                         <span className="text-xs ml-1">Category</span>
                       </div>
-                      <select
-                        className={`select select-bordered select-sm`}
-                        value={item.category}
-                        onChange={(e) => updateItem(idx, { category: e.target.value as ItemCategory })}
-                        disabled={readOnly}
-                      >
-                        {categories.map((c) => (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        ))}
-                      </select>
+                      {readOnly ? (
+                        <input
+                          className={`input input-bordered input-sm  ${readOnly ? 'pointer-events-none' : ''}`}
+                          value={item.category}
+                          readOnly={readOnly}
+                        />
+                      ) : (
+                        <select
+                          className={`select select-bordered select-sm`}
+                          value={item.category}
+                          onChange={(e) => updateItem(idx, { category: e.target.value as ItemCategory })}
+                          disabled={readOnly}
+                        >
+                          {categories.map((c) => (
+                            <option key={c} value={c}>
+                              {c}
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </label>
 
                     <label className="form-control">
@@ -200,12 +208,12 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                         <span className="text-xs ml-1">Price</span>
                       </div>
                       <input
-                        className="input input-bordered input-sm"
+                        className={`input input-bordered input-sm  ${readOnly ? 'pointer-events-none' : ''}`}
                         name={`item-${idx}-price`}
                         value={item.price}
                         onChange={(e) => updateItem(idx, { price: e.target.value })}
                         placeholder="$12.50"
-                        disabled={readOnly}
+                        readOnly={readOnly}
                       />
                     </label>
 
@@ -220,10 +228,10 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                           min={0}
                           max={5}
                           step={1}
-                          className={`input input-bordered input-sm`}
+                          className={`input input-bordered input-sm  ${readOnly ? 'pointer-events-none' : ''}`}
                           value={item.rating}
                           onChange={(e) => updateItem(idx, { rating: Number(e.target.value) })}
-                          disabled={readOnly}
+                          readOnly={readOnly}
                         />
                       </label>
 
@@ -235,10 +243,10 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                           type="number"
                           name={`item-${idx}-rank`}
                           min={1}
-                          className="input input-bordered input-sm"
+                          className={`input input-bordered input-sm  ${readOnly ? 'pointer-events-none' : ''}`}
                           value={item.rank}
                           onChange={(e) => updateItem(idx, { rank: Number(e.target.value) })}
-                          disabled={readOnly}
+                          readOnly={readOnly}
                         />
                       </label>
                     </div>
@@ -265,12 +273,12 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                         <span className="text-xs ml-1.5">Notes</span>
                       </div>
                       <textarea
-                        className="textarea textarea-bordered textarea-sm"
+                        className={`textarea textarea-bordered textarea-sm ${readOnly ? 'pointer-events-none' : ''}`}
                         name={`item-${idx}-notes`}
                         value={item.notes}
                         onChange={(e) => updateItem(idx, { notes: e.target.value })}
                         placeholder="Tasting notes, preparation, what you liked..."
-                        disabled={readOnly}
+                        readOnly={readOnly}
                       />
                     </label>
                   </div>
