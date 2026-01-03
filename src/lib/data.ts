@@ -124,6 +124,10 @@ export function getPlaceAndReviewsDetails(placeAndReviews: PlaceAndReview[], use
   }, {} as PlaceAndReviewsDetails);
 }
 
+export function isCurrentUser(currentUser: User | null, user: User): boolean {
+  return currentUser !== null && currentUser.id === user.id;
+}
+
 function hasReplaceValue(field: string): boolean {
   return field === FIELD_REPLACE_VALUE;
 }

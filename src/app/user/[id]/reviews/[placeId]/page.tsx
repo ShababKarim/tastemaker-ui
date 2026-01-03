@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { getPlace, getReview, getUser } from '@/lib/data';
+import { getPlace, getReview, getUser, isCurrentUser } from '@/lib/data';
+import { getSessionUserFromCookies } from '@/lib/auth';
 import { ItemCategory, ItemReview, PlaceReview } from '@/lib/types';
-import PlaceReviewFormWrapper from '@/components/PlaceReviewFormWrapper';
 import { FIELD_REPLACE_VALUE } from '@/lib/constants';
+import PlaceReviewForm from '@/components/PlaceReviewForm';
 
 function emptyItem(): ItemReview {
   return {
@@ -31,8 +32,12 @@ function createInitialValue(placeId: string, userId: string): PlaceReview {
 
 export default async function PlaceReviewPage({ params }: { params: Promise<{ id: string; placeId: string }> }) {
   const { id: userId, placeId } = await params;
-  const user = await getUser(userId);
-  const place = await getPlace(placeId);
+  const [user, currentUser, place] = await Promise.all([
+    getUser(userId),
+    getSessionUserFromCookies(),
+    getPlace(placeId),
+  ]);
+  const isPageOwner = isCurrentUser(currentUser, user);
 
   if (!user || !place) {
     return (
@@ -61,13 +66,17 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
           </li>
         </ul>
       </div>
-
-      <h1 className="text-3xl font-bold">Review {place.name}</h1>
-      <p className="text-base-content/70">
-        Add one or more items you tried at this place. Use the + button to add more.
-      </p>
-
-      <PlaceReviewFormWrapper value={review ?? initialValue} userId={user.id} place={place} />
+      {isPageOwner ? (
+        <>
+          <h1 className="text-3xl font-bold">Review {place.name}</h1>
+          <p className="text-base-content/70">
+            Add one or more items you tried at this place. Use the + button to add more.
+          </p>
+        </>
+      ) : (
+        <h1 className="text-3xl font-bold">{place.name}</h1>
+      )}
+      <PlaceReviewForm place={place} value={review ?? initialValue} readOnly={!isPageOwner} />;
     </div>
   );
 }

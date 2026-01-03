@@ -10,13 +10,13 @@ import { savePlaceReview } from '@/lib/data';
 export type PlaceReviewFormProps = {
   place: Place;
   value: PlaceReview;
-  readOnly?: boolean;
+  readOnly: boolean;
 };
 
 const categories: ItemCategory[] = ['Entree', 'App', 'Dessert', 'Drink'];
 const SUBMITTING_TEXT = 'Saving review...';
 
-export default function PlaceReviewForm({ place, value, readOnly = false }: PlaceReviewFormProps) {
+export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewFormProps) {
   const [form, setForm] = useState<PlaceReview>(() => ({ ...value }));
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,6 +122,7 @@ export default function PlaceReviewForm({ place, value, readOnly = false }: Plac
                 className={`input input-bordered`}
                 value={form.rating}
                 onChange={(e) => setField('rating', Number(e.target.value))}
+                disabled={readOnly}
               />
             </div>
 
@@ -137,6 +138,7 @@ export default function PlaceReviewForm({ place, value, readOnly = false }: Plac
                 className="input input-bordered"
                 value={form.rank}
                 onChange={(e) => setField('rank', Number(e.target.value))}
+                disabled={readOnly}
               />
             </div>
           </div>

@@ -1,14 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { getReviewsAndPlacesByUser, getUser } from '@/lib/data';
+import { getReviewsAndPlacesByUser, getUser, isCurrentUser } from '@/lib/data';
 import ReviewsInfoSection from '@/components/ReviewsInfoSection';
 import { getSessionUserFromCookies } from '@/lib/auth';
 import ReviewsMapContainer from '@/components/ReviewsMapContainer';
-import { User } from '@/lib/types';
-
-function isCurrentUser(currentUser: User | null, user: User): boolean {
-  return currentUser !== null && currentUser.id === user.id;
-}
 
 export default async function UserProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -69,31 +64,26 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {reviews.map(({ review, place }) => (
-              <div key={place.id} className="card bg-base-200 shadow-sm">
-                <figure>
-                  <Image
-                    src={place.photoUrl}
-                    alt={place.name}
-                    width={600}
-                    height={400}
-                    className="w-full h-48 object-cover"
-                  />
-                </figure>
-                <div className="card-body">
-                  <h3 className="card-title">{place.name}</h3>
-                  <p className="text-sm text-base-content/70">{place.address}</p>
-                  <p className="text-sm">
-                    {review.items.length === 1 ? '1 dish reviewed' : `${review.items.length} dishes reviewed`}
-                  </p>
-                  <div className="card-actions justify-end">
-                    {isPageOwner ? (
-                      <Link className="btn btn-primary btn-sm" href={`/user/${user.id}/reviews/${place.id}`}>
-                        Edit
-                      </Link>
-                    ) : null}
+              <Link key={place.id} href={`/user/${user.id}/reviews/${place.id}`} passHref>
+                <div className="card bg-base-200 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                  <figure>
+                    <Image
+                      src={place.photoUrl}
+                      alt={place.name}
+                      width={600}
+                      height={400}
+                      className="w-full h-48 object-cover"
+                    />
+                  </figure>
+                  <div className="card-body">
+                    <h3 className="card-title">{place.name}</h3>
+                    <p className="text-sm text-base-content/70">{place.address}</p>
+                    <p className="text-sm">
+                      {review.items.length === 1 ? '1 dish reviewed' : `${review.items.length} dishes reviewed`}
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
