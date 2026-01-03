@@ -33,7 +33,7 @@ export default function LoginModal() {
       if (next) {
         router.replace(next);
       } else {
-        router.replace(`/profile/${data.user.id}`);
+        router.replace(`/user/${data.user.id}`);
       }
 
       router.refresh();

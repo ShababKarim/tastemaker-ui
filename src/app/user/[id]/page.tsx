@@ -2,11 +2,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getReviewsAndPlacesByUser, getUser } from '@/lib/data';
 import ReviewsInfoSection from '@/components/ReviewsInfoSection';
+import { getSessionUserFromCookies } from '@/lib/auth';
+import ReviewsMapContainer from '@/components/ReviewsMapContainer';
+import { User } from '@/lib/types';
+
+function isCurrentUser(currentUser: User | null, user: User): boolean {
+  return currentUser !== null && currentUser.id === user.id;
+}
 
 export default async function UserProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const user = await getUser(id);
-  const reviews = await getReviewsAndPlacesByUser(id);
+  const [user, currentUser, reviews] = await Promise.all([
+    getUser(id),
+    getSessionUserFromCookies(),
+    getReviewsAndPlacesByUser(id),
+  ]);
+  const isPageOwner = isCurrentUser(currentUser, user);
 
   if (!user) {
     return (
@@ -49,6 +60,8 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
         </div>
       </div>
 
+      {isPageOwner ? <ReviewsMapContainer user={user} reviews={reviews} /> : null}
+
       <section>
         <h2 className="text-2xl text-secondary font-semibold mb-4">Reviews</h2>
         {reviews.length === 0 ? (
@@ -73,9 +86,11 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
                     {review.items.length === 1 ? '1 dish reviewed' : `${review.items.length} dishes reviewed`}
                   </p>
                   <div className="card-actions justify-end">
-                    <Link className="btn btn-primary btn-sm" href={`/user/${user.id}/reviews/${place.id}`}>
-                      Edit
-                    </Link>
+                    {isPageOwner ? (
+                      <Link className="btn btn-primary btn-sm" href={`/user/${user.id}/reviews/${place.id}`}>
+                        Edit
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </div>

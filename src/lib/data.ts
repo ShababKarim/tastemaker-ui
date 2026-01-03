@@ -1,4 +1,4 @@
-import { User, PlaceReview, Place, PlaceAndReview } from '@/lib/types';
+import { User, PlaceReview, Place, PlaceAndReview, PlaceAndReviewsDetails } from '@/lib/types';
 import { MOCK_PLACE_REVIEWS, MOCK_PLACES, MOCK_USERS } from '@/lib/mocks';
 import { FIELD_REPLACE_VALUE } from '@/lib/constants';
 
@@ -44,6 +44,20 @@ export async function getReviewsAndPlacesByUser(userId: string): Promise<PlaceAn
   return reviews.map((review) => ({ review, place: MOCK_PLACES[review.placeId] }));
 }
 
+export async function getReviewsFromFollowedUsers(userId: string): Promise<PlaceAndReview[]> {
+  const user = await getUser(userId);
+  const followedReviews: PlaceAndReview[] = [];
+
+  for (const followedUserId of user.following) {
+    const reviews = await getReviewsByUser(followedUserId);
+    reviews.forEach((review) => {
+      followedReviews.push({ review, place: MOCK_PLACES[review.placeId] });
+    });
+  }
+
+  return followedReviews;
+}
+
 export async function getTopReviewsFromFollowers(placeId: string): Promise<PlaceReview[]> {
   // Logic should live in backend; should be limited to 5
   const user = await getCurrentUser();
@@ -85,6 +99,29 @@ export async function savePlaceReview(input: PlaceReview): Promise<PlaceReview> 
   ].concat(input);
 
   return review;
+}
+
+export function getPlaceAndReviewsDetails(placeAndReviews: PlaceAndReview[], userId: string): PlaceAndReviewsDetails {
+  return placeAndReviews.reduce((acc, placeAndReview) => {
+    const { place } = placeAndReview;
+    const placeAndReviewsDetails = { ...acc };
+
+    if (!(place.id in placeAndReviewsDetails)) {
+      placeAndReviewsDetails[place.id] = {
+        place,
+        visited: false,
+        count: 0,
+      };
+    }
+
+    placeAndReviewsDetails[place.id] = {
+      ...placeAndReviewsDetails[place.id],
+      visited: placeAndReviewsDetails[place.id].visited || placeAndReview.review.userId === userId,
+      count: placeAndReviewsDetails[place.id].count + 1,
+    };
+
+    return placeAndReviewsDetails;
+  }, {} as PlaceAndReviewsDetails);
 }
 
 function hasReplaceValue(field: string): boolean {

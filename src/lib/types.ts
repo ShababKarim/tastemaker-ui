@@ -15,6 +15,7 @@ export type ItemReview = {
 export type Place = {
   id: string;
   name: string;
+  coordinates: [number, number];
   address: string;
   photoUrl: string;
 };
@@ -32,6 +33,8 @@ export type PlaceAndReview = {
   place: Place;
   review: PlaceReview;
 };
+
+export type PlaceAndReviewsDetails = Record<string, { place: Place; visited: boolean; count: number }>;
 
 export type User = {
   id: string;
