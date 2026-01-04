@@ -60,6 +60,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     coordinates: [40.726, -73.9897],
     address: '65 4th Ave, New York, NY',
     photoUrl: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800&auto=format&fit=crop',
+    description: 'Award-winning Japanese ramen restaurant known for rich tonkotsu broth and perfectly chewy noodles. A must-visit destination for authentic ramen lovers.',
   },
   place_2: {
     id: 'place_2',
@@ -67,6 +68,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     coordinates: [40.7223, -74.005],
     address: '189 Spring St, New York, NY',
     photoUrl: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=800&auto=format&fit=crop',
+    description: 'World-famous bakery home of the original Cronut. Innovative pastries and desserts that blend French technique with creative flavors.',
   },
   place_3: {
     id: 'place_3',
@@ -74,6 +76,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     coordinates: [40.7181, -73.9951],
     address: '69 Grand St, Brooklyn, NY',
     photoUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop',
+    description: 'Brooklyn coffee roastery serving single-origin Colombian coffee. Minimalist space with exceptional pour-overs and fresh pastries.',
   },
   place_4: {
     id: 'place_4',
@@ -81,6 +84,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     coordinates: [40.7189, -74.003],
     address: '33 Cortlandt Alley, New York, NY',
     photoUrl: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=800&auto=format&fit=crop',
+    description: 'Trendy American diner famous for gourmet burgers and elevated comfort food. Known for their double cheeseburger and creative cocktails.',
   },
   place_5: {
     id: 'place_5',
@@ -88,6 +92,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     coordinates: [40.7449, -73.9857],
     address: '15 W 27th St, New York, NY',
     photoUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop',
+    description: 'Innovative plant-based restaurant proving vegan food can be exciting. Creative dishes that rival traditional meat-based cuisine.',
   },
 };
 

@@ -18,6 +18,7 @@ export type Place = {
   coordinates: [number, number];
   address: string;
   photoUrl: string;
+  description: string;
 };
 
 export type PlaceReview = {
