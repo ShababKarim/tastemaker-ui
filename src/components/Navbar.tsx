@@ -60,9 +60,6 @@ export default async function Navbar() {
                 </Link>
               </li>
               <li>
-                <Link href="/">Settings</Link>
-              </li>
-              <li>
                 <LogoutButton />
               </li>
             </ul>

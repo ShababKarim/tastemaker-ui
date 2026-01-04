@@ -155,11 +155,24 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
               <div key={idx} className="rounded-xl border border-base-300 p-4 bg-base-100">
                 <div className="flex items-start gap-4">
                   <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-base-200">
-                    {item.photoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.photoUrl} alt={item.name || 'Item'} className="w-full h-full object-cover" />
+                    {!readOnly ? (
+                      <label htmlFor={`item_file_${idx}`} className="w-full h-full cursor-pointer block">
+                        {item.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={item.photoUrl} alt={item.name || 'Item'} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full grid place-items-center text-xs text-base-content/60">No photo</div>
+                        )}
+                      </label>
                     ) : (
-                      <div className="w-full h-full grid place-items-center text-xs text-base-content/60">No photo</div>
+                      <>
+                        {item.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={item.photoUrl} alt={item.name || 'Item'} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full grid place-items-center text-xs text-base-content/60">No photo</div>
+                        )}
+                      </>
                     )}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
@@ -251,23 +264,6 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                       </label>
                     </div>
 
-                    {!readOnly && (
-                      <div className="md:col-span-2 flex items-center gap-3">
-                        <input
-                          id={`item_file_${idx}`}
-                          name={`item-${idx}-photo`}
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => handleItemFile(idx, e)}
-                        />
-                        <label htmlFor={`item_file_${idx}`} className="btn btn-sm">
-                          Upload photo
-                        </label>
-                        <span className="text-xs text-base-content/60">JPG, PNG, or GIF</span>
-                      </div>
-                    )}
-
                     <label className="form-control flex flex-col md:col-span-2">
                       <div className="label">
                         <span className="text-xs ml-1.5">Notes</span>
@@ -291,6 +287,17 @@ export default function PlaceReviewForm({ place, value, readOnly }: PlaceReviewF
                     )}
                   </div>
                 </div>
+
+                {!readOnly && (
+                  <input
+                    id={`item_file_${idx}`}
+                    name={`item-${idx}-photo`}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleItemFile(idx, e)}
+                  />
+                )}
               </div>
             ))}
           </div>
