@@ -28,6 +28,7 @@ export type PlaceReview = {
   rating: number;
   rank: number;
   items: ItemReview[];
+  description?: string;
 };
 
 export type PlaceAndReview = {

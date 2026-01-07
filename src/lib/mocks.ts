@@ -108,6 +108,7 @@ export const MOCK_PLACE_REVIEWS: Record<string, PlaceReview[]> = {
       placeId: 'place_1',
       rating: 5,
       rank: 1,
+      description: 'Absolutely incredible ramen experience! The Akamaru Modern was rich and flavorful with perfectly cooked noodles. The pork buns were heavenly - cloud-like buns with melt-in-your-mouth pork belly. Worth every penny and the wait!',
       items: [
         {
           id: 'item_1_1_1',
@@ -151,6 +152,7 @@ export const MOCK_PLACE_REVIEWS: Record<string, PlaceReview[]> = {
       placeId: 'place_1',
       rating: 4,
       rank: 2,
+      description: 'Came here specifically for the pork buns and they did not disappoint! Honestly could eat 10 of these and skip the ramen. The Karaka Spicy had good heat but the spice ball was a bit overwhelming for my taste. Still a solid spot!',
       items: [
         {
           id: 'item_1_2_1',
@@ -243,6 +245,7 @@ export const MOCK_PLACE_REVIEWS: Record<string, PlaceReview[]> = {
       placeId: 'place_2',
       rating: 5,
       rank: 1,
+      description: 'The Cronut lives up to the hype! Flaky layers with vanilla cream - absolutely worth the early morning wait. The DKA was caramelized perfection and the Frozen S\'more torched to order was pure magic. This place is dessert heaven!',
       items: [
         {
           id: 'item_2_1_1',

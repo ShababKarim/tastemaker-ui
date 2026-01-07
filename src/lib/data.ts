@@ -58,11 +58,19 @@ export async function getReviewsFromFollowedUsers(userId: string): Promise<Place
   return followedReviews;
 }
 
-export async function getTopReviewsFromFollowers(placeId: string): Promise<PlaceReview[]> {
-  // Logic should live in backend; should be limited to 5
-  const user = await getCurrentUser();
+export async function getReviewsFromFollowersForPlace(placeId: string, user: User | null): Promise<PlaceAndReview[]> {
+  if (!user) {
+    return [];
+  }
 
-  return MOCK_PLACE_REVIEWS[placeId].filter((review) => user.following.includes(review.userId));
+  const followedReviews: PlaceAndReview[] = [];
+  MOCK_PLACE_REVIEWS[placeId].forEach((review) => {
+    if (user.following.includes(review.userId)) {
+      followedReviews.push({ review, place: MOCK_PLACES[placeId] });
+    }
+  });
+
+  return followedReviews;
 }
 
 function uid(prefix: string) {
