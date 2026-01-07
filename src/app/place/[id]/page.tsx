@@ -4,6 +4,7 @@ import { getPlace, getReviewsFromFollowersForPlace } from '@/lib/data';
 import { getSessionUserFromCookies } from '@/lib/auth';
 import PlaceReviewCard from '@/components/PlaceReviewCard';
 import LoginButton from '@/components/LoginButton';
+import PlaceMap from '@/components/PlaceMap';
 
 function getCityAndState(address: string): string {
   return address.split(', ').slice(-2).join(', ');
@@ -122,6 +123,17 @@ export default async function PlacePage({ params }: { params: Promise<{ id: stri
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Map Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-base-200 rounded-lg p-6">
+          <h2 className="text-2xl font-bold mb-4">Directions</h2>
+          <p className="text-base-content/70 mb-6">
+            Click on the map to get directions from your current location to {place.name}
+          </p>
+          <PlaceMap place={place} />
         </div>
       </div>
     </div>
