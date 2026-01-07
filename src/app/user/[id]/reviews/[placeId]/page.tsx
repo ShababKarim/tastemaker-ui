@@ -55,28 +55,30 @@ export default async function PlaceReviewPage({ params }: { params: Promise<{ id
   const initialValue = createInitialValue(placeId, userId);
 
   return (
-    <div className="space-y-6">
-      <div className="breadcrumbs text-sm">
-        <ul>
-          <li>
-            <Link href={`/user/${user.id}`}>{user.username}</Link>
-          </li>
-          <li>
-            <span className="opacity-70">{place.name}</span>
-          </li>
-        </ul>
+    <div className="min-h-screen bg-base-100 space-y-6">
+      <div className="container mx-auto px-4 py-8">
+        <div className="breadcrumbs text-sm">
+          <ul>
+            <li>
+              <Link href={`/user/${user.id}`}>{user.username}</Link>
+            </li>
+            <li>
+              <span className="opacity-70">{place.name}</span>
+            </li>
+          </ul>
+        </div>
+        {isPageOwner ? (
+          <>
+            <h1 className="text-3xl font-bold">Review {place.name}</h1>
+            <p className="text-base-content/70">
+              Add one or more items you tried at this place. Use the + button to add more.
+            </p>
+          </>
+        ) : (
+          <h1 className="text-3xl font-bold">{place.name}</h1>
+        )}
+        <PlaceReviewForm place={place} value={review ?? initialValue} readOnly={!isPageOwner} />
       </div>
-      {isPageOwner ? (
-        <>
-          <h1 className="text-3xl font-bold">Review {place.name}</h1>
-          <p className="text-base-content/70">
-            Add one or more items you tried at this place. Use the + button to add more.
-          </p>
-        </>
-      ) : (
-        <h1 className="text-3xl font-bold">{place.name}</h1>
-      )}
-      <PlaceReviewForm place={place} value={review ?? initialValue} readOnly={!isPageOwner} />;
     </div>
   );
 }
